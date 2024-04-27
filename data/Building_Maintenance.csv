@@ -1,0 +1,54 @@
+Description,Date,Expected Date,Category,Expected Cost (INR),Floor,Class/Lab No,Bill URL,Is Done
+Repair AC unit in Lab 101,2024-04-20,2024-04-25,Electronic,3000,1,101,,No
+Replace broken projector,2024-04-22,2024-04-28,Electronic,5000,4,406,,No
+Fix plumbing issue in restroom on 3rd floor,2024-04-24,2024-04-27,Plumbing,1500,3,Other,,No
+Upgrade Wi-Fi routers on all floors,2024-04-26,2024-05-02,IT,40000,6,606,,No
+Service elevator on 5th floor,2024-04-21,2024-04-25,Maintenance,15000,5,Other,,No
+Repair faulty computer in Lab 302,2024-04-23,2024-04-26,IT,1000,3,302,,No
+Install new fire alarm system,2024-04-25,2024-04-30,Maintenance,65000,7,Other,,No
+Paint walls in corridors,2024-04-26,2024-05-01,Maintenance,30000,7,Other,,No
+Replace broken chairs in Lab 201,2024-04-22,2024-04-27,Furniture,3000,2,201,,No
+Repair leaky roof on 4th floor,2024-04-20,2024-04-25,Maintenance,30000,8,802,,No
+Fix malfunctioning lights in hallway,2024-04-23,2024-04-26,Electrical,1000,6,603,,No
+Upgrade server room cooling system,2024-04-24,2024-04-29,IT,50000,4,404,,No
+Repair broken door in Lab 403,2024-04-21,2024-04-26,Maintenance,500,4,403,,No
+Clean ventilation ducts in Lab 305,2024-04-25,2024-04-29,Maintenance,8000,3,305,,No
+Install smart board in Classroom 203,2024-04-28,2024-05-03,IT,45000,2,203,,No
+Repair leaking faucet in Restroom,2024-04-29,2024-05-04,Plumbing,800,4,Other,,No
+Replace old desks in Lab 202,2024-04-30,2024-05-05,Furniture,30000,2,202,,No
+Install CCTV cameras in corridors,2024-05-01,2024-05-06,Maintenance,60000,6,608,,No
+Fix water heater in Restroom 302,2024-05-02,2024-05-07,Plumbing,12000,3,302,,No
+Replace ceiling tiles in Lab 102,2024-04-25,2024-04-30,Maintenance,15000,1,102,,No
+Install new whiteboards in Classroom,2024-04-26,2024-05-01,Furniture,25000,2,205,,No
+Repair water leakage in Chemistry Lab,2024-04-27,2024-05-02,Plumbing,20000,1,110,,No
+Upgrade computer systems in Lab 401,2024-04-28,2024-05-03,IT,75000,4,401,,No
+Replace damaged chairs ,2024-04-30,2024-05-05,Furniture,20000,5,503,,No
+Fix broken door lock in Lab 303,2024-05-01,2024-05-06,Maintenance,5000,3,303,,No
+Repair projector screen in Lab 205,2024-05-03,2024-05-08,IT,10000,2,205,,No
+Install new plumbing fixtures in Restroom 301,2024-05-04,2024-05-09,Plumbing,20000,3,301,,No
+Replace toner cartridges in printers,2024-04-25,2024-04-27,IT,3000,3,303,,No
+Clean clogged AC unit,2024-04-22,2024-04-24,Electronics,1500,1,108,,No
+Investigate flickering lights in corridor,2024-04-20,2024-04-29,Electrical,800,2,Other,,No
+Upgrade WiFi access points in library for better coverage,2024-04-18,2024-05-10,IT,20000,2,203,,No
+Replace broken window,2024-04-15,2024-04-17,Maintenance,2500,3,302,,No
+Reinstall software on computers ,2024-04-27,2024-04-29,IT,1000,6,606,,No
+Check and refill fire extinguishers on 5th floor,2024-04-26,2024-04-26,Maintenance,500,5,Other,,No
+Repair leaky faucet in restroom near room 205,2024-04-24,2024-04-25,Plumbing,700,3,Other,,No
+Annual maintenance for chemistry lab fume hoods,2024-04-18,2024-04-19,Electronics,5000,1,110,,No
+Install antivirus software on all computers,2024-05-13,2024-05-18,IT,10000,6,603,,No
+Upgrade RAM in computer lab,2024-05-15,2024-05-20,IT,30000,6,607,,No
+Replace faulty hard drives in computer lab,2024-05-17,2024-05-22,IT,50000,4,406,,No
+Install software updates on all computers,2024-05-19,2024-05-19,IT,500,3,304,,No
+Repair network connectivity issues in computer lab,2024-05-21,2024-05-26,IT,2500,6,603,,No
+Replace worn-out keyboards and mice in computer lab,2024-05-25,2024-05-30,IT,1500,4,410,,No
+Set up virtual machines for software testing,2024-05-29,2024-06-03,IT,500,5,506,,No
+Fix loose tiles in corridor,2024-06-05,2024-06-10,Maintenance,5000,4,Other,,No
+Fix malfunctioning oven in staffroom,2024-06-08,2024-06-8,Electronics,3000,4,411,,No
+Replace damaged windows in Library,2024-06-12,2024-06-17,Maintenance,4500,2,203,,No
+Install new lighting fixtures in Gymkhana,2024-06-14,2024-06-19,Electrical,600,1,103,,No
+Fix malfunctioning projector,2024-06-24,2024-06-29,Electronics,4000,4,503,,No
+Repair plumbing issues in Canteen kitchen,2024-06-28,2024-07-03,Plumbing,3200,Ground,Other,,No
+Fix broken chairs in Seminar Hall,2024-06-30,2024-07-05,Furniture,28000,Ground,008,,No
+Service sound system in Seminar Hall,2024-07-04,2024-07-09,Electronics,4000,Ground,008,,No
+Service air conditioners in Seminar Hall,2024-07-04,2024-07-09,Electronics,4000,Ground,008,,No
+Install new lighting fixtures in Seminar Hall,2024-07-06,2024-07-11,Electrical,5500,Ground,008,,No
