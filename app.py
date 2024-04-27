@@ -1,48 +1,37 @@
-from dash import Dash, dcc, html
+from dash import Dash, dcc
+import dash_bootstrap_components as dbc
+import dash
 
-app = Dash(__name__)
+app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME],
+	   suppress_callback_exceptions=True, prevent_initial_callbacks=True)
+server = app.server
 
-app.layout = html.Div([
-    dcc.Graph(
-        figure=dict(
-            data=[
-                dict(
-                    x=[1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-                    2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
-                    y=[219, 146, 112, 127, 124, 180, 236, 207, 236, 263,
-                    350, 430, 474, 526, 488, 537, 500, 439],
-                    name='Rest of world',
-                    type='bar',
-                    marker=dict(
-                        color='rgb(55, 83, 109)'
-                    )
-                ),
-                dict(
-                    x=[1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-                    2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
-                    y=[16, 13, 10, 11, 28, 37, 43, 55, 56, 88, 105, 156, 270,
-                    299, 340, 403, 549, 499],
-                    name='China',
-                    type='bar',
-                    marker=dict(
-                        color='rgb(26, 118, 255)'
-                    )
-                )
-            ],
-            layout=dict(
-                title='US Export of Plastic Scrap',
-                showlegend=True,
-                legend=dict(
-                    x=0,
-                    y=1.0
-                ),
-                margin=dict(l=40, r=0, t=40, b=30)
-            )
-        ),
-        style={'height': 300},
-        id='my-graph-example'
-    )
-])
+############################################################################################
+# Import shared components
 
+from assets.footer import _footer
+from assets.nav import _nav
+
+############################################################################################
+# App Layout
+app.layout = dbc.Container([
+	
+	dbc.Row([
+        dbc.Col([_nav], width = 2),
+        dbc.Col([
+            dbc.Row([dash.page_container])
+	    ], width = 10),
+    ]),
+    dbc.Row([
+        dbc.Col([], width = 2),
+        dbc.Col([
+            dbc.Row([_footer])
+	    ], width = 10),
+    ]),
+     dcc.Store(id='browser-memo', data=dict(), storage_type='session')
+], fluid=True)
+
+############################################################################################
+# Run App
 if __name__ == '__main__':
-    app.run(debug=True)
+	app.run_server(debug=False, host='0.0.0.0')
