@@ -64,6 +64,17 @@ body {
     font-weight: 100; 
 }
 
+/* form page */
+.input-text {
+    /* color: black !important; */
+    background-color: #042f33 !important
+}
+
+/* Change the background color of input fields */
+.input-field {
+    background-color: #f8f9fa !important;
+}
+
 /* === PAGE 1 ===*/
 .row-content {
     margin: 20px 0px 20px 0px;
