@@ -1,4 +1,5 @@
 from datetime import date
+from datetime import datetime
 import dash
 from dash import html, dcc, Input, Output, State, callback
 import dash_bootstrap_components as dbc
@@ -27,22 +28,39 @@ def get_bill_url(description):
 
 layout = dbc.Container([
     dbc.Row([
-        dbc.Col([
-            html.H3(['Project Management']),
+        dbc.Col([   
+            html.H3(['Project Management'],className='row-titles'),
             dbc.Row([
                 dbc.Col([
                     html.Button('Create Project', id='create-project-btn', className='my-button'),
-                ],
+                ],  
+                 style={
+                        "display": "flex",
+                        "justify-content": "center",
+                       }
+                
                   ),
                 dbc.Col([
                     html.Button('Edit Project', id='edit-project-btn', className='my-button'),
-                ], ),
+                ],style={
+                        "display": "flex",
+                        "justify-content": "center",
+                       } ),
                 dbc.Col([
                     html.Button('Bill View/Upload', id='bill-upload-btn', className='my-button'),
-                ], ),
+                ], style={
+                        "display": "flex",
+                        "justify-content": "center",
+                       }),
             ],
-            justify='center',
+            style={
+                    #    flex column
+                        "display": "flex",
+                        "flex-direction": "row",
+                        "justify-content": "space-between",
+                       }
             ),
+            html.Br(),
             html.Div(id='update-success-message') ,
             html.Div(id='content-section')
         ])
@@ -128,9 +146,10 @@ def create_project_form_with_data(data):
              html.Label('Description'),
         dbc.Input(id='description', type='text', value=data['Description'], className='input-text', style={'background-color': '#f0f0f0', 'color': 'black'}),  
         html.Label('Date'),
-        dbc.Input(id='date', type='date', value=data['Date'], className='input-text'),  
+        html.Label('Date'),
+        dbc.Input(id='date', type='date', value=datetime.strptime(data['Date'], '%d-%m-%Y').strftime('%Y-%m-%d'), className='input-text'),  
         html.Label('Expected Date'),
-        dbc.Input(id='expected_date', type='date', value=data['Expected Date'], className='input-text'),  
+        dbc.Input(id='expected_date', type='date', value=datetime.strptime(data['Expected Date'], '%d-%m-%Y').strftime('%Y-%m-%d'), className='input-text'),  
         html.Label('Category'),
         dbc.Input(id='category', type='text', value=data['Category'], className='input-text'),  
         html.Label('Expected Cost (INR)'),
@@ -187,7 +206,6 @@ def update_form(n_clicks, description, date, expected_date, category, expected_c
 # Function to create the bill upload section
 def bill_upload_section():
     return html.Div([
-        html.Br(),
         dcc.Dropdown(
             id='description-dropdown',
             options=[{'label': desc, 'value': desc} for desc in get_descriptions()],
@@ -217,8 +235,9 @@ def bill_upload_section():
 
 # Callback to update bill images based on selected description
 @callback(
-    Output('output-bill-images', 'children'),
-    [Input('description-dropdown', 'value')]
+    Output('output-bill-images', 'children', allow_duplicate=True),
+    [Input('description-dropdown', 'value')],
+    prevent_initial_call=True
 )
 def update_bill_images(description):
     if description:
@@ -235,14 +254,18 @@ def update_bill_images(description):
                     ]
                 )
         else:
-            return html.Div([html.P('No images available for this description.')])
+            return html.Div([html.P('No bills available for this description.')])
 
 # Callback to handle bill upload
 @callback(
-    Output('output-bill-upload', 'children'),
+    [
+    Output('output-bill-upload', 'reset'),
+     Output('output-bill-images', 'children', allow_duplicate=True),
+     ],  
     [Input('upload-bill', 'contents'),
      Input('upload-bill', 'filename'),
-     Input('description-dropdown', 'value')]
+     Input('description-dropdown', 'value')],
+    prevent_initial_call=True
 )
 def update_output(contents, filename, selected_description):
     if contents is not None and selected_description:
@@ -252,13 +275,22 @@ def update_output(contents, filename, selected_description):
         if url:
             # Append the URL to the CSV for the selected description
             append_url_to_csv(selected_description, url)
-            return html.Div([
-                html.P('Bill uploaded successfully!')
-            ])
+            updated_images = update_bill_images(selected_description)
+            url = None
+            contents = None
+            return (
+                html.Div([
+                    html.P('Bill uploaded successfully!')
+                ]),
+                updated_images,
+            )
         else:
             return html.Div([
-                html.P('Error uploading bill!')
+                html.P('Error uploading bill!'),
+                     None
             ])
+    return None, None
+        
 
 # API call for uploading bill
 def upload_bill_to_api(contents, filename):
@@ -273,16 +305,19 @@ def upload_bill_to_api(contents, filename):
 
 # Function to append URL to CSV for the selected description
 def append_url_to_csv(description, url):
+    print("append_url_to_csv")
     with open('./data/Building_Maintenance.csv', 'r', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         rows = list(reader)
         for index, row in enumerate(rows):
             if row['Description'] == description:
+                print("match found desc")
                 # Append the URL to the list
                 if row['Bill URL']:
                     row['Bill URL'] = row['Bill URL'] + '|' + url
                 else:
                     row['Bill URL'] = url
+                break
     with open('./data/Building_Maintenance.csv', 'w', newline='') as csvfile:
         fieldnames = ['Description', 'Date', 'Expected Date', 'Category', 'Expected Cost (INR)', 'Floor', 'Class/Lab No', 'Bill URL', 'Is Done']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -315,8 +350,10 @@ def submit_form(n_clicks, description, date, expected_date, category, expected_c
             writer.writeheader()
         writer.writerow({
             'Description': description,
-            'Date': date,
-            'Expected Date': expected_date,
+            # 'Date': date,
+            'Date': datetime.strptime(date, '%Y-%m-%d').strftime('%d-%m-%Y'),
+            # 'Expected Date': expected_date,
+            'Expected Date': datetime.strptime(expected_date, '%Y-%m-%d').strftime('%d-%m-%Y'),
             'Category': category,
             'Expected Cost (INR)': expected_cost,
             'Floor': floor,

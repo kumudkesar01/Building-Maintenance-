@@ -52,5 +52,6 @@ Fix broken chairs in Seminar Hall,30-06-2024,05-07-2024,Furniture,28000,Ground,8
 Service sound system in Seminar Hall,04-07-2024,09-07-2024,Electronics,4000,Ground,8,,No
 Service air conditioners in Seminar Hall,04-07-2024,09-07-2024,Electronics,4000,Ground,8,,No
 Install new lighting fixtures in Seminar Hall,06-07-2024,11-07-2024,Electrical,5500,Ground,8,,No
-Test Description,11-02-2024,15-04-2024,Technical,30000,3,302,,No
-Test Description 2,28-04-2024,30-08-2024,Plumbing,10000,4,407,,No
+Test Description,11-02-2024,15-04-2024,Technical,30000,3,302,https://tedowests-bucket.s3.amazonaws.com/uploads/bap_37030926484a4b85b1146e0123716a40-20240428223035.jpeg,No
+Test Description 2,28-04-2024,30-08-2024,Plumbing,10000,4,407,https://tedowests-bucket.s3.amazonaws.com/uploads/bap_37030926484a4b85b1146e0123716a40-20240428223035.jpeg|https://tedowests-bucket.s3.amazonaws.com/uploads/bap_2111ae13352c440a92165cb818c755af-20240428225901.jpeg,No
+test proj,2024-04-17,2024-05-11,Technical,1211,1,105,,No
