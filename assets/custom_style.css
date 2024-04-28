@@ -75,6 +75,11 @@ body {
     background-color: #f8f9fa !important;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    margin: 0px;
+     }
+
 /* === PAGE 1 ===*/
 .row-content {
     margin: 20px 0px 20px 0px;
@@ -235,6 +240,4 @@ input[type="checkbox" i] {
 
 /* === PAGE 5 ===*/
 /* add font color as black */
-.pending-itemss-table {
-    color: black;
-}
+
