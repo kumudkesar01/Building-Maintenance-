@@ -41,7 +41,6 @@ layout = dbc.Container([
                     html.Button('Bill View/Upload', id='bill-upload-btn', className='my-button'),
                 ], ),
             ],
-            # center align the buttons
             justify='center',
             ),
             html.Div(id='update-success-message') ,
@@ -79,22 +78,20 @@ def create_project_form():
     return html.Form(id='maintenance-form', children=[
                 html.Label('Description'),
                 dbc.Input(id='description', type='text', className='input-text',
-                        #   give it a background color
                             style={'background-color': '#f0f0f0', 'color': 'black'}
-                          ),  # Apply custom CSS class
-
+                          ),
                 html.Label('Date'),
-                dbc.Input(id='date', type='date', className='input-text'),  # Apply custom CSS class
+                dbc.Input(id='date', type='date', className='input-text'),
                 html.Label('Expected Date'),
-                dbc.Input(id='expected_date', type='date', className='input-text'),  # Apply custom CSS class
+                dbc.Input(id='expected_date', type='date', className='input-text'),
                 html.Label('Category'),
-                dbc.Input(id='category', type='text', className='input-text'),  # Apply custom CSS class
+                dbc.Input(id='category', type='text', className='input-text'),
                 html.Label('Expected Cost (INR)'),
-                dbc.Input(id='expected_cost', type='number', className='input-text'),  # Apply custom CSS class
+                dbc.Input(id='expected_cost', type='number', className='input-text'),
                 html.Label('Floor'),
-                dbc.Input(id='floor', type='number', className='input-text'),  # Apply custom CSS class
+                dbc.Input(id='floor', type='number', className='input-text'),
                 html.Label('Class/Lab No'),
-                dbc.Input(id='class_lab', type='text', className='input-text'),  # Apply custom CSS class
+                dbc.Input(id='class_lab', type='text', className='input-text'),
 
                 html.Br(),
                 html.Button('Submit', id='submit-button', type='submit', className='my-button')
@@ -106,7 +103,7 @@ def edit_project_form():
         dcc.Dropdown(
             id='description-dropdown',
             options=[{'label': desc, 'value': desc} for desc in get_descriptions()],
-            value=get_descriptions()[0],  # Default value
+            value=get_descriptions()[0],
             className='input-text'
         ),
         html.Div(id='edit-form-content'),
@@ -276,11 +273,6 @@ def upload_bill_to_api(contents, filename):
 
 # Function to append URL to CSV for the selected description
 def append_url_to_csv(description, url):
-    # with open('./data/Building_Maintenance.csv', 'a', newline='') as csvfile:
-    #     fieldnames = ['Description', 'Bill URL']
-    #     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    #     writer.writerow({'Description': description, 'Bill URL': url})
-    # find the row with the selected description and update the Bill URL field (list)
     with open('./data/Building_Maintenance.csv', 'r', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         rows = list(reader)
