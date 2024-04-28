@@ -232,3 +232,9 @@ input[type="checkbox" i] {
     margin: 0px 5px 0px 0px !important;
     padding: 0px !important;
 }
+
+/* === PAGE 5 ===*/
+/* add font color as black */
+.pending-itemss-table {
+    color: black;
+}
