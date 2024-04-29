@@ -1,12 +1,10 @@
-from datetime import date
-from datetime import datetime
 import dash
 from dash import html, dcc, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 import csv
 import requests
 import base64
-
+from datetime import datetime
 
 dash.register_page(__name__, name='Project Management', title='Form')
 
@@ -29,10 +27,10 @@ def get_bill_url(description):
 layout = dbc.Container([
     dbc.Row([
         dbc.Col([   
-            html.H3(['Project Management'],className='row-titles'),
+            html.H3(['Project Management'], className='row-titles'),
             dbc.Row([
                 dbc.Col([
-                    html.Button('Create Project', id='create-project-btn', className='my-button'),
+                    dbc.Button('Create Project', id='create-project-btn', className='my-button'),
                 ],  
                  style={
                         "display": "flex",
@@ -41,33 +39,51 @@ layout = dbc.Container([
                 
                   ),
                 dbc.Col([
-                    html.Button('Edit Project', id='edit-project-btn', className='my-button'),
+                    dbc.Button('Edit Project', id='edit-project-btn', className='my-button'),
                 ],style={
                         "display": "flex",
                         "justify-content": "center",
                        } ),
                 dbc.Col([
-                    html.Button('Bill View/Upload', id='bill-upload-btn', className='my-button'),
+                    dbc.Button('Bill View/Upload', id='bill-upload-btn', className='my-button'),
                 ], style={
                         "display": "flex",
                         "justify-content": "center",
                        }),
             ],
+            
             style={
-                    #    flex column
-                        "display": "flex",
-                        "flex-direction": "row",
-                        "justify-content": "space-between",
+                    "display": "flex",
+                    "flex-direction": "row",
+                    "justify-content": "space-between",
                        }
             ),
             html.Br(),
-            html.Div(id='update-success-message') ,
+            html.Div(id='update-success-message'),
             html.Div(id='content-section')
         ])
-    ],
-    ),
+    ]),
+    dbc.Row([
+        dbc.Col([
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-transformed', className='my-graph')),
+            dbc.Button("Button 1", color="primary", className="mt-2")
+        ], width=6, className='multi-graph'),
+        dbc.Col([
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-acf', className='my-graph')),
+            dbc.Button("Button 2", color="primary", className="mt-2")
+        ], width=6, className='multi-graph')
+    ]),
+    dbc.Row([
+        dbc.Col([
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-boxcox', className='my-graph')),
+            dbc.Button("Button 3", color="primary", className="mt-2")
+        ], width=6, className='multi-graph'),
+        dbc.Col([
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-pacf', className='my-graph')),
+            dbc.Button("Button 4", color="primary", className="mt-2")
+        ], width=6, className='multi-graph')
+    ])
 ],
-
 style={
     "margin-left": "5rem",
     "margin-right": "5rem",
@@ -163,7 +179,6 @@ def create_project_form_with_data(data):
         ])
     ])
 
-
 @callback(
     [Output('maintenance-form-update', 'reset'),
      Output('update-success-message', 'children')],
@@ -199,11 +214,9 @@ def update_form(n_clicks, description, date, expected_date, category, expected_c
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(rows)
-        # return create_project_form()
         return True, dbc.Alert("Update successful!", color="success")
     return None, None
 
-# Function to create the bill upload section
 def bill_upload_section():
     return html.Div([
         dcc.Dropdown(
@@ -233,7 +246,6 @@ def bill_upload_section():
         html.Div(id='output-bill-upload')
     ])
 
-# Callback to update bill images based on selected description
 @callback(
     Output('output-bill-images', 'children', allow_duplicate=True),
     [Input('description-dropdown', 'value')],
@@ -256,7 +268,6 @@ def update_bill_images(description):
         else:
             return html.Div([html.P('No bills available for this description.')])
 
-# Callback to handle bill upload
 @callback(
     [
     Output('output-bill-upload', 'reset'),
@@ -273,11 +284,8 @@ def update_output(contents, filename, selected_description):
         decoded = base64.b64decode(content_string)
         url = upload_bill_to_api(decoded, filename)
         if url:
-            # Append the URL to the CSV for the selected description
             append_url_to_csv(selected_description, url)
             updated_images = update_bill_images(selected_description)
-            url = None
-            contents = None
             return (
                 html.Div([
                     html.P('Bill uploaded successfully!')
@@ -286,13 +294,10 @@ def update_output(contents, filename, selected_description):
             )
         else:
             return html.Div([
-                html.P('Error uploading bill!'),
-                     None
+                html.P('Error uploading bill!')
             ])
     return None, None
-        
 
-# API call for uploading bill
 def upload_bill_to_api(contents, filename):
     try:
         api = 'http://127.0.0.1:3001/upload_bill'
@@ -303,7 +308,6 @@ def upload_bill_to_api(contents, filename):
         print(e)
         return None
 
-# Function to append URL to CSV for the selected description
 def append_url_to_csv(description, url):
     print("append_url_to_csv")
     with open('./data/Building_Maintenance.csv', 'r', newline='') as csvfile:
@@ -312,7 +316,6 @@ def append_url_to_csv(description, url):
         for index, row in enumerate(rows):
             if row['Description'] == description:
                 print("match found desc")
-                # Append the URL to the list
                 if row['Bill URL']:
                     row['Bill URL'] = row['Bill URL'] + '|' + url
                 else:
@@ -324,18 +327,16 @@ def append_url_to_csv(description, url):
         writer.writeheader()
         writer.writerows(rows)
 
-# Callback to handle form submission
 @callback(
     Output('maintenance-form', 'reset'),
     [Input('submit-button', 'n_clicks')],
     [State('description', 'value'),
-        State('date', 'value'),
-        State('expected_date', 'value'),
-        State('category', 'value'),
-        State('expected_cost', 'value'),
-        State('floor', 'value'),
-        State('class_lab', 'value')]
-
+     State('date', 'value'),
+     State('expected_date', 'value'),
+     State('category', 'value'),
+     State('expected_cost', 'value'),
+     State('floor', 'value'),
+     State('class_lab', 'value')]
 )
 def submit_form(n_clicks, description, date, expected_date, category, expected_cost, floor, class_lab):
     if not n_clicks:
@@ -345,15 +346,12 @@ def submit_form(n_clicks, description, date, expected_date, category, expected_c
     with open('./data/Building_Maintenance.csv', 'a', newline='') as csvfile:
         fieldnames = ['Description', 'Date', 'Expected Date', 'Category', 'Expected Cost (INR)', 'Floor', 'Class/Lab No', 'Bill URL', 'Is Done']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        # Write header if file is empty
         if csvfile.tell() == 0:
             writer.writeheader()
         writer.writerow({
             'Description': description,
-            # 'Date': date,
-            'Date': datetime.strptime(date, '%Y-%m-%d').strftime('%d-%m-%Y'),
-            # 'Expected Date': expected_date,
-            'Expected Date': datetime.strptime(expected_date, '%Y-%m-%d').strftime('%d-%m-%Y'),
+            'Date': date,
+            'Expected Date': expected_date,
             'Category': category,
             'Expected Cost (INR)': expected_cost,
             'Floor': floor,
@@ -362,3 +360,4 @@ def submit_form(n_clicks, description, date, expected_date, category, expected_c
             'Is Done': "No"
         })
     return True
+

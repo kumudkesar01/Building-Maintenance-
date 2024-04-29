@@ -7,7 +7,6 @@ import numpy as np
 import warnings
 import plotly.express as px
 
-
 # Load the Building Maintenance data
 df_building = pd.read_csv('data/Building_Maintenance.csv')
 
@@ -75,21 +74,21 @@ layout = dbc.Container([
     # Section 3: isDone Status Pie Chart with Padding
     dbc.Row([
         dbc.Col([
-            dcc.Graph(id='isdone-pie-chart')
+            dcc.Graph(id='isdone-pie-chart', className='my-graph')
         ])
     ], style={'padding-top': '20px', 'padding-bottom': '20px'}),  # Add padding between sections
 
     # Section 4: Category Cost Breakdown Bar Chart with Padding
     dbc.Row([
         dbc.Col([
-            dcc.Graph(id='category-cost-bar-chart')
+            dcc.Graph(id='category-cost-bar-chart', className='my-graph')
         ])
     ], style={'padding-bottom': '20px'}),  # Add padding between graphs
 
     # Section 5: Category-wise Work Done Bar Chart with Padding
     dbc.Row([
         dbc.Col([
-            dcc.Graph(id='category-work-done-bar-chart')
+            dcc.Graph(id='category-work-done-bar-chart', className='my-graph')
         ])
     ], style={'padding-bottom': '20px'}),  # Add padding between graphs
 
@@ -97,11 +96,11 @@ layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             html.H3('Pending Items', style={'padding-top': '20px'}),
-            html.Div(id='pending-items-table'),
-            # change the font colors please 
+            html.Div(id='pending-items-table', style={'color': 'black'}),
+            # Change the font colors
         ])
                 
-    ],style={'padding-bottom': '20px','text_color': 'black'}),  # Add padding between table and footer
+    ], style={'padding-bottom': '20px'}),  # Add padding between table and footer
 
 ])
 
@@ -128,5 +127,3 @@ def update_charts_and_table(selected_floor):
             generate_category_cost_bar_chart(selected_floor),
             generate_category_work_done_bar_chart(selected_floor),
             generate_pending_items_table(selected_floor))
-
-
