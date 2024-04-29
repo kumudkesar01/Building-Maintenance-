@@ -5,8 +5,11 @@ import csv
 import requests
 import base64
 from datetime import datetime
+import pandas as pd
+import plotly.graph_objects as go
 
 dash.register_page(__name__, name='Project Management', title='Form')
+df_building = pd.read_csv('data/Building_Maintenance.csv')
 
 def get_descriptions():
     descriptions = []
@@ -23,6 +26,59 @@ def get_bill_url(description):
             if row['Description'] == description:
                 return row['Bill URL']
     return []
+
+
+def generate_cost_by_category_bar(df_building):
+    df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+    df_grouped = df.groupby('Category')['Expected Cost (INR)'].sum().reset_index()  # group by category and sum the cost
+    fig = go.Figure(data=[
+        go.Bar(name='Expected Cost (INR)', x=df_grouped['Category'], y=df_grouped['Expected Cost (INR)'])
+    ])
+    fig.update_layout(title='Cost by Category', title_x=0.5)
+    return fig
+
+fig2 = generate_cost_by_category_bar(df_building)
+# fig = generate_date_vs_expected_date_scatter(df_building)
+
+def generate_completed_vs_pending_bar(df_building):
+    df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+    df_grouped = df.groupby('Is Done').size().reset_index(name='Count')  # group by status and count the tasks
+    fig = go.Figure(data=[
+        go.Bar(name='Count', x=df_grouped['Is Done'], y=df_grouped['Count'])
+    ])
+    fig.update_layout(title='Completed vs Pending Tasks', title_x=0.5)
+    return fig
+fig4 = generate_completed_vs_pending_bar(df_building)
+
+def generate_floor_wise_category_bar(df_building):
+    df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+    df_grouped = df.groupby(['Floor', 'Category']).size().reset_index(name='Count')  # group by floor and category and count the tasks
+
+    floors = df_grouped['Floor'].unique()
+    categories = df_grouped['Category'].unique()
+
+    fig = go.Figure(data=[
+        go.Bar(name=category, x=floors, y=df_grouped[df_grouped['Category'] == category]['Count'])
+        for category in categories
+    ])
+
+    fig.update_layout(barmode='stack', title='Floor wise Category Distribution', title_x=0.5)
+    return fig
+
+fig3 = generate_floor_wise_category_bar(df_building)
+
+# def generate_delayed_days_bar(df_building):
+#     df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+#     df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
+#     df['Expected Date'] = pd.to_datetime(df['Expected Date'], format='%d-%m-%Y')
+#     df['Days Delayed'] = (df['Date'] - df['Expected Date']).dt.days  # calculate the difference in days
+#     fig = go.Figure(data=[
+#         go.Bar(name='Days Delayed', x=df['Title'], y=df['Days Delayed'])
+#     ])
+#     fig.update_layout(title='Title vs Days Delayed', title_x=0.5)
+#     return fig
+
+# fig = generate_delayed_days_bar(df_building)
 
 layout = dbc.Container([
     dbc.Row([
@@ -69,17 +125,17 @@ layout = dbc.Container([
             dbc.Button("Button 1", color="primary", className="mt-2")
         ], width=6, className='multi-graph'),
         dbc.Col([
-            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-acf', className='my-graph')),
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-acf', className='my-graph',figure=fig2)),
             dbc.Button("Button 2", color="primary", className="mt-2")
         ], width=6, className='multi-graph')
     ]),
     dbc.Row([
         dbc.Col([
-            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-boxcox', className='my-graph')),
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-boxcox', className='my-graph',figure=fig3)),
             dbc.Button("Button 3", color="primary", className="mt-2")
         ], width=6, className='multi-graph'),
         dbc.Col([
-            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-pacf', className='my-graph')),
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-pacf', className='my-graph',figure=fig4)),
             dbc.Button("Button 4", color="primary", className="mt-2")
         ], width=6, className='multi-graph')
     ])
@@ -97,6 +153,8 @@ style={
      Input('edit-project-btn', 'n_clicks'),
      Input('bill-upload-btn', 'n_clicks')]
 )
+
+
 def update_content(create_clicks, edit_clicks, bill_clicks):
     ctx = dash.callback_context
     if ctx.triggered:
