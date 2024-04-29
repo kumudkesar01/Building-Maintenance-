@@ -30,7 +30,8 @@ def get_bill_url(description):
 
 
 def generate_cost_by_category_bar(df_building):
-    df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+    # df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+    df = pd.read_csv('data/Building_Maintenance.csv')
     df_grouped = df.groupby('Category')['Expected Cost (INR)'].sum().reset_index()  # group by category and sum the cost
     fig = go.Figure(data=[
         go.Bar(name='Expected Cost (INR)', x=df_grouped['Category'], y=df_grouped['Expected Cost (INR)'])
@@ -54,7 +55,7 @@ fig4 = generate_completed_vs_pending_bar(df_building)
 def generate_floor_wise_category_bar(df_building):
     df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
     df_grouped = df.groupby(['Floor', 'Category']).size().reset_index(name='Count')  # group by floor and category and count the tasks
-
+    # print(df_grouped)
     floors = df_grouped['Floor'].unique()
     categories = df_grouped['Category'].unique()
 
@@ -67,6 +68,28 @@ def generate_floor_wise_category_bar(df_building):
     return fig
 
 fig3 = generate_floor_wise_category_bar(df_building)
+
+def generate_date_expected_date_line(df_building):
+    df = df_building.copy()  
+
+    # Fill NaN values
+    df['Date'] = df['Date'].fillna(method='ffill')
+    df['Expected Date'] = df['Expected Date'].fillna(method='ffill')
+
+    df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
+    df['Expected Date'] = pd.to_datetime(df['Expected Date'], format='%d-%m-%Y')
+
+    fig = go.Figure()
+
+    # Add traces
+    fig.add_trace(go.Scatter(y=df['Date'], x=df['Description'], mode='lines', name='Date'))
+    fig.add_trace(go.Scatter(y=df['Expected Date'], x=df['Description'], mode='lines', name='Expected Date'))
+
+    fig.update_layout(title='Date vs Expected Date', title_x=0.5)
+    return fig
+fig = generate_date_expected_date_line(df_building)
+
+
 
 layout = dbc.Container([
     dbc.Row([
@@ -109,22 +132,22 @@ layout = dbc.Container([
     ]),
     dbc.Row([
         dbc.Col([
-            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-transformed', className='my-graph')),
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-transformed', className='my-graph',figure=fig)),
             dbc.Button("Button 1", color="primary", className="mt-2")
         ], width=6, className='multi-graph'),
         dbc.Col([
             dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-acf', className='my-graph',figure=fig2)),
-            dbc.Button("Button 2", color="primary", className="mt-2")
+            # dbc.Button("Button 2", color="primary", className="mt-2")
         ], width=6, className='multi-graph')
     ]),
     dbc.Row([
         dbc.Col([
             dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-boxcox', className='my-graph',figure=fig3)),
-            dbc.Button("Button 3", color="primary", className="mt-2")
+            # dbc.Button("Button 3", color="primary", className="mt-2")
         ], width=6, className='multi-graph'),
         dbc.Col([
             dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-pacf', className='my-graph',figure=fig4)),
-            dbc.Button("Button 4", color="primary", className="mt-2")
+            # dbc.Button("Button 4", color="primary", className="mt-2")
         ], width=6, className='multi-graph')
     ])
 ],
@@ -134,6 +157,31 @@ style={
     "width": "90%"
 }
 )
+
+# call backs for updating the graphs
+@callback(
+    Output('fig-acf', 'figure'),
+    [Input('fig-acf', 'figure')],
+)
+def update_cost_by_category_graph(_):
+    df = pd.read_csv('data/Building_Maintenance.csv')  # Load CSV data dynamically
+    return generate_cost_by_category_bar(df)
+
+@callback(
+    Output('fig-boxcox', 'figure'),
+    [Input('fig-boxcox', 'figure')],
+)
+def update_floor_wise_category_graph(_):
+    df = pd.read_csv('data/Building_Maintenance.csv')
+    return generate_floor_wise_category_bar(df)
+
+@callback(
+    Output('fig-pacf', 'figure'),
+    [Input('fig-pacf', 'figure')],
+)
+def update_completed_vs_pending_graph(_):
+    df = pd.read_csv('data/Building_Maintenance.csv')
+    return generate_completed_vs_pending_bar(df)
 
 @callback(
     Output('content-section', 'children'),
@@ -203,6 +251,7 @@ def load_edit_form_data(description):
                     return create_project_form_with_data(row)
 
 def create_project_form_with_data(data):
+    # print("update data", data)
     return html.Div([
         html.Form(id='maintenance-form-update', children=[
              html.Label('Description'),
@@ -221,7 +270,17 @@ def create_project_form_with_data(data):
         html.Label('Class/Lab No'),
         dbc.Input(id='class_lab', type='text', value=data['Class/Lab No'], className='input-text'),  
         html.Br(),
+        # a check box to mark the task as done, initial value is set to the value in the csv called Is Done which is a strin "Yes" or "No"
+        dcc.Checklist(
+            id='is-done',
+            options=[
+                {'label': 'Mark as Done', 'value': 'Yes'}
+            ],
+            value=[data['Is Done']]
+        ),
+        html.Br(),
         html.Button('Update', id='update-button', type='submit', className='my-button', style={'font-size': '16px', 'padding': '10px 20px'}),
+        html.Br(),
         ])
     ])
 
@@ -235,15 +294,18 @@ def create_project_form_with_data(data):
      State('category', 'value'),
      State('expected_cost', 'value'),
      State('floor', 'value'),
-     State('class_lab', 'value')]
+     State('class_lab', 'value'),
+    State('is-done', 'value')
+     ]
 )
-def update_form(n_clicks, description, date, expected_date, category, expected_cost, floor, class_lab):
+def update_form(n_clicks, description, date, expected_date, category, expected_cost, floor, class_lab, is_done):
     if n_clicks:
         with open('./data/Building_Maintenance.csv', 'r', newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             rows = list(reader)
             for index, row in enumerate(rows):
                 if row['Description'] == description:
+                    # print('is_done', is_done)
                     rows[index] = {
                         'Description': description,
                         # 'Date': date,
@@ -255,7 +317,7 @@ def update_form(n_clicks, description, date, expected_date, category, expected_c
                         'Floor': floor,
                         'Class/Lab No': class_lab,
                         'Bill URL': row['Bill URL'],
-                        'Is Done': "No"
+                        'Is Done': is_done[-1] if is_done else "No"
                     }
         with open('./data/Building_Maintenance.csv', 'w', newline='') as csvfile:
             fieldnames = ['Description', 'Date', 'Expected Date', 'Category', 'Expected Cost (INR)', 'Floor', 'Class/Lab No', 'Bill URL', 'Is Done']
@@ -357,13 +419,13 @@ def upload_bill_to_api(contents, filename):
         return None
 
 def append_url_to_csv(description, url):
-    print("append_url_to_csv")
+    # print("append_url_to_csv")
     with open('./data/Building_Maintenance.csv', 'r', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         rows = list(reader)
         for index, row in enumerate(rows):
             if row['Description'] == description:
-                print("match found desc")
+                # print("match found desc")
                 if row['Bill URL']:
                     row['Bill URL'] = row['Bill URL'] + '|' + url
                 else:

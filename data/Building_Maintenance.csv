@@ -8,7 +8,7 @@ Repair faulty computer in Lab 302,23-04-2024,26-04-2024,IT,1000,3,302,,Yes
 Install new fire alarm system,25-04-2024,30-04-2024,Maintenance,65000,7,Other,,No
 Paint walls in corridors,26-04-2024,01-05-2024,Maintenance,30000,7,Other,,No
 Replace broken chairs in Lab 201,22-04-2024,27-04-2024,Furniture,3000,2,201,,Yes
-Repair leaky roof on 4th floor,20-04-2024,25-04-2024,Maintenance,30000,8,802,,Yes
+Repair leaky roof on 8th floor,20-04-2024,25-04-2024,Maintenance,30000,8,802,,Yes
 Fix malfunctioning lights in hallway,23-04-2024,26-04-2024,Electrical,1000,6,603,,No
 Upgrade server room cooling system,24-04-2024,29-04-2024,IT,50000,4,404,,No
 Repair broken door in Lab 403,21-04-2024,26-04-2024,Maintenance,500,4,403,,No
@@ -33,7 +33,7 @@ Upgrade WiFi access points in library for better coverage,18-04-2024,10-05-2024,
 Replace broken window,15-04-2024,17-04-2024,Maintenance,2500,3,302,,No
 Reinstall software on computers ,27-04-2024,29-04-2024,IT,1000,6,606,,No
 Check and refill fire extinguishers on 5th floor,26-04-2024,26-04-2024,Maintenance,500,5,Other,,No
-Repair leaky faucet in restroom near room 205,24-04-2024,25-04-2024,Plumbing,700,3,Other,,No
+Repair leaky faucet in restroom ,24-04-2024,25-04-2024,Plumbing,700,3,Other,,No
 Annual maintenance for chemistry lab fume hoods,18-04-2024,19-04-2024,Electronics,5000,1,110,,No
 Install antivirus software on all computers,13-05-2024,18-05-2024,IT,10000,6,603,,No
 Upgrade RAM in computer lab,15-05-2024,20-05-2024,IT,30000,6,607,,No
@@ -54,4 +54,4 @@ Service air conditioners in Seminar Hall,04-07-2024,09-07-2024,Electronics,4000,
 Install new lighting fixtures in Seminar Hall,06-07-2024,11-07-2024,Electrical,5500,Ground,8,,No
 Test Description,11-02-2024,15-04-2024,Technical,30000,3,302,https://tedowests-bucket.s3.amazonaws.com/uploads/bap_37030926484a4b85b1146e0123716a40-20240428223035.jpeg,No
 Test Description 2,28-04-2024,30-08-2024,Plumbing,10000,4,407,https://tedowests-bucket.s3.amazonaws.com/uploads/bap_37030926484a4b85b1146e0123716a40-20240428223035.jpeg|https://tedowests-bucket.s3.amazonaws.com/uploads/bap_2111ae13352c440a92165cb818c755af-20240428225901.jpeg,No
-test proj,17-04-2024,11-05-2024,Technical,1211,1,109,,No
+test proj,17-04-2024,11-05-2024,Technical,15000,8,801,,Yes

@@ -2,7 +2,7 @@ import dash
 from dash import html
 import dash_bootstrap_components as dbc
 
-dash.register_page(__name__, path='/', name='Home', title='SARIMA | Home')
+dash.register_page(__name__, path='/', name='Home', title='Building Maintenance')
 
 layout = dbc.Container([
     # title
