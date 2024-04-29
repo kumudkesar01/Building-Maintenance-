@@ -10,7 +10,7 @@
 html,
 body {
     height: 100vh;
-    background-image: linear-gradient(109.6deg, rgb(0, 0, 0) 11.2%, rgb(11, 132, 145) 91.1%);
+    background-image: linear-gradient(109.6deg, rgb(0, 0, 0) 11.2%, rgb(11, 71, 145) 91.1%);
     overflow-x: hidden;
     font-size: 18px;
 }
@@ -240,4 +240,6 @@ input[type="checkbox" i] {
 
 /* === PAGE 5 ===*/
 /* add font color as black */
+
+
 

@@ -5,34 +5,46 @@ import dash_bootstrap_components as dbc
 dash.register_page(__name__, path='/', name='Home', title='Building Maintenance')
 
 layout = dbc.Container([
-    # title
+    # Title Section
     dbc.Row([
         dbc.Col([
-            html.H3(['Welcome!']),
-            html.P([html.B(['App Overview'])], className='par')
-        ], width=12, className='row-titles')
-    ]),
-    # Guidelines
+            html.H1('Welcome!', className='display-3 text-center mb-4'),
+            html.P('App Overview', className='lead text-center')
+        ], width=12)
+    ], className='mb-5'),
+    # Guidelines Section
     dbc.Row([
-        dbc.Col([], width=2),
         dbc.Col([
-            html.P([html.B('1) Built-in dataset'), html.Br(),
-                    'The default dataset used is Building Maintenance.'], className='guide'),
-            html.P([html.B('2) Apply transformations to make the data available for every floor and categories'), html.Br(),
-                    'The tools available on the page are: log and differencing, the Box-Cox plot, and the A. Dickey Fuller test.', html.Br(),
-                    'Once the data is stationary, check the ACF and PACF plots for suitable model parameters.'], className='guide'),
-            html.P([html.B('3) Perform a SARIMA model grid search'), html.Br(),
-                    'Choose the train-test split and provide from-to ranges for any parameter. ',
-                    'The seasonality component of the model can be excluded by leaving all right-hand parameters to 0.', html.Br(),
-                    'The 10 top-performer models (according to the AIC score) are shown.'], className='guide'),
-            html.P([html.B('4) Set up your final model'), html.Br(),
-                    'The parameters for the best model from the previous step are suggested.', html.Br(),
-                    'The SARIMA model with the input parameters is automatically fitted to the train data; predictions are made for the train and test sets.', html.Br(),
-                    'The model residuals ACF and PACF are shown.'], className='guide'),
-            html.Div(
-                dbc.Button("Get Started", color="primary", href="/form", className="mr-1", style={'font-size': '16px', 'font-weight': 'bold', 'padding': '10px 20px'})
-            )
-        ], width=8),
-        dbc.Col([], width=2)
+            html.P([
+                html.Strong('1) Built-in dataset'),
+                html.Br(),
+                'The default dataset used is Building Maintenance.'
+            ], className='guide'),
+            html.P([
+                html.Strong('2) Get in touch with the due work with this functionality'),
+                html.Br(),
+                'Title vs date - expected date (days delayed).'
+            ], className='guide'),
+            html.P([
+                html.Strong('3) Determine the total as well as individual cost of each category of each floor'),
+                html.Br(),
+                'Cost according to different categories.'
+            ], className='guide'),
+            html.P([
+                html.Strong('4) Determine which floor has which categories of work'),
+                html.Br(),
+                'Floor wise category graph.'
+            ], className='guide'),
+            html.P([
+                html.Strong('5) Determine the completed and the pending work'),
+                html.Br(),
+                'Completed vs pending.'
+            ], className='guide'),
+            dbc.Button("Get Started", color="primary", href="/form", className="mt-4", style={'font-size': '16px', 'font-weight': 'bold', 'padding': '10px 20px'})
+        ], width=8),  # Adjusted width to accommodate the image column
+        # Image Column
+        dbc.Col([
+            html.Img(src='assets/images/image3.png', style={'width': '100%', 'height': 'auto', 'margin-right': '34rem'})
+        ], width=4)
     ])
-])
+], className='py-5')

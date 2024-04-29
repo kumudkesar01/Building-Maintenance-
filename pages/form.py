@@ -69,6 +69,7 @@ def generate_floor_wise_category_bar(df_building):
 
 fig3 = generate_floor_wise_category_bar(df_building)
 
+
 def generate_date_expected_date_line(df_building):
     df = df_building.copy()  
 
@@ -79,17 +80,27 @@ def generate_date_expected_date_line(df_building):
     df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
     df['Expected Date'] = pd.to_datetime(df['Expected Date'], format='%d-%m-%Y')
 
+    # Calculate the delay
+    df['Delay'] = df['Date'] - df['Expected Date']
+
+    # Filter delayed points
+    delayed_points = df[df['Delay'] > pd.Timedelta(0)]
+
     fig = go.Figure()
 
-    # Add traces
+    # Add traces for original and expected dates
     fig.add_trace(go.Scatter(y=df['Date'], x=df['Description'], mode='lines', name='Date'))
     fig.add_trace(go.Scatter(y=df['Expected Date'], x=df['Description'], mode='lines', name='Expected Date'))
 
+    # Add delayed points to the plot
+    if not delayed_points.empty:
+        fig.add_trace(go.Scatter(y=delayed_points['Expected Date'], x=delayed_points['Description'],
+                                 mode='markers', name='Delayed Date', marker=dict(color='red', size=10)))
+
     fig.update_layout(title='Date vs Expected Date', title_x=0.5)
     return fig
+
 fig = generate_date_expected_date_line(df_building)
-
-
 
 layout = dbc.Container([
     dbc.Row([

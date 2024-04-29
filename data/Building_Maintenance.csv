@@ -2,9 +2,9 @@ Description,Date,Expected Date,Category,Expected Cost (INR),Floor,Class/Lab No,B
 Repair AC unit in Lab 101,20-04-2024,25-04-2024,Electronics,3000,1,101,,Yes
 Replace broken projector,22-04-2024,28-04-2024,Electronics,5000,4,406,,Yes
 Fix plumbing issue in restroom on 3rd floor,24-04-2024,27-04-2024,Plumbing,1500,3,Other,,Yes
-Upgrade Wi-Fi routers on all floors,26-04-2024,02-05-2024,IT,40000,6,606,,Yes
+Upgrade Wi-Fi routers on all floors,26-05-2024,02-05-2024,IT,40000,6,606,,Yes
 Service elevator on 5th floor,21-04-2024,25-04-2024,Maintenance,15000,5,Other,,Yes
-Repair faulty computer in Lab 302,23-04-2024,26-04-2024,IT,1000,3,302,,Yes
+Repair faulty computer in Lab 302,23-05-2024,26-04-2024,IT,1000,3,302,,Yes
 Install new fire alarm system,25-04-2024,30-04-2024,Maintenance,65000,7,Other,,No
 Paint walls in corridors,26-04-2024,01-05-2024,Maintenance,30000,7,Other,,No
 Replace broken chairs in Lab 201,22-04-2024,27-04-2024,Furniture,3000,2,201,,Yes
