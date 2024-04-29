@@ -200,8 +200,10 @@ def update_form(n_clicks, description, date, expected_date, category, expected_c
                 if row['Description'] == description:
                     rows[index] = {
                         'Description': description,
-                        'Date': date,
-                        'Expected Date': expected_date,
+                        # 'Date': date,
+                        'Date': datetime.strptime(date, '%Y-%m-%d').strftime('%d-%m-%Y'),
+                        # 'Expected Date': expected_date,
+                        'Expected Date': datetime.strptime(expected_date, '%Y-%m-%d').strftime('%d-%m-%Y'),
                         'Category': category,
                         'Expected Cost (INR)': expected_cost,
                         'Floor': floor,
@@ -350,8 +352,10 @@ def submit_form(n_clicks, description, date, expected_date, category, expected_c
             writer.writeheader()
         writer.writerow({
             'Description': description,
-            'Date': date,
-            'Expected Date': expected_date,
+            # 'Date': date,
+            'Date': datetime.strptime(date, '%Y-%m-%d').strftime('%d-%m-%Y'),
+            # 'Expected Date': expected_date,
+            'Expected Date': datetime.strptime(expected_date, '%Y-%m-%d').strftime('%d-%m-%Y'),
             'Category': category,
             'Expected Cost (INR)': expected_cost,
             'Floor': floor,
