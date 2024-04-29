@@ -29,7 +29,8 @@ def get_bill_url(description):
 
 
 def generate_cost_by_category_bar(df_building):
-    df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+    # df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
+    df = pd.read_csv('data/Building_Maintenance.csv')
     df_grouped = df.groupby('Category')['Expected Cost (INR)'].sum().reset_index()  # group by category and sum the cost
     fig = go.Figure(data=[
         go.Bar(name='Expected Cost (INR)', x=df_grouped['Category'], y=df_grouped['Expected Cost (INR)'])
@@ -53,7 +54,7 @@ fig4 = generate_completed_vs_pending_bar(df_building)
 def generate_floor_wise_category_bar(df_building):
     df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
     df_grouped = df.groupby(['Floor', 'Category']).size().reset_index(name='Count')  # group by floor and category and count the tasks
-
+    print(df_grouped)
     floors = df_grouped['Floor'].unique()
     categories = df_grouped['Category'].unique()
 
@@ -146,6 +147,31 @@ style={
     "width": "90%"
 }
 )
+
+# call backs for updating the graphs
+@callback(
+    Output('fig-acf', 'figure'),
+    [Input('fig-acf', 'figure')],
+)
+def update_cost_by_category_graph(_):
+    df = pd.read_csv('data/Building_Maintenance.csv')  # Load CSV data dynamically
+    return generate_cost_by_category_bar(df)
+
+@callback(
+    Output('fig-boxcox', 'figure'),
+    [Input('fig-boxcox', 'figure')],
+)
+def update_floor_wise_category_graph(_):
+    df = pd.read_csv('data/Building_Maintenance.csv')
+    return generate_floor_wise_category_bar(df)
+
+@callback(
+    Output('fig-pacf', 'figure'),
+    [Input('fig-pacf', 'figure')],
+)
+def update_completed_vs_pending_graph(_):
+    df = pd.read_csv('data/Building_Maintenance.csv')
+    return generate_completed_vs_pending_bar(df)
 
 @callback(
     Output('content-section', 'children'),
