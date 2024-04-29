@@ -8,6 +8,7 @@ from datetime import datetime
 import pandas as pd
 import plotly.graph_objects as go
 
+
 dash.register_page(__name__, name='Project Management', title='Form')
 df_building = pd.read_csv('data/Building_Maintenance.csv')
 
@@ -66,19 +67,6 @@ def generate_floor_wise_category_bar(df_building):
     return fig
 
 fig3 = generate_floor_wise_category_bar(df_building)
-
-# def generate_delayed_days_bar(df_building):
-#     df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
-#     df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
-#     df['Expected Date'] = pd.to_datetime(df['Expected Date'], format='%d-%m-%Y')
-#     df['Days Delayed'] = (df['Date'] - df['Expected Date']).dt.days  # calculate the difference in days
-#     fig = go.Figure(data=[
-#         go.Bar(name='Days Delayed', x=df['Title'], y=df['Days Delayed'])
-#     ])
-#     fig.update_layout(title='Title vs Days Delayed', title_x=0.5)
-#     return fig
-
-# fig = generate_delayed_days_bar(df_building)
 
 layout = dbc.Container([
     dbc.Row([
