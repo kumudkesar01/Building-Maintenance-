@@ -26,7 +26,7 @@ def generate_isdone_pie_chart(floor):
     df_floor = df_building[df_building['Floor'] == floor]
     isdone_counts = df_floor['Is Done'].value_counts()
     fig = go.Figure(data=[go.Pie(labels=isdone_counts.index, values=isdone_counts.values)])
-    fig.update_layout(title=f'isDone Status for Floor {floor}', title_x=0.5)
+    fig.update_layout(title=f'Work Completion Status for Floor {floor}', title_x=0.5)
     return fig
 
 
@@ -48,7 +48,7 @@ def generate_category_work_done_bar_chart(floor):
 # Helper function to generate table for pending items in each floor
 def generate_pending_items_table(floor):
     df_floor = df_building[(df_building['Floor'] == floor)]
-    table = dbc.Table.from_dataframe(df_floor[['Description', 'Category', 'Class/Lab No']], striped=True, bordered=True, hover=True, style={'color': 'black'})
+    table = dbc.Table.from_dataframe(df_floor[['Description', 'Category', 'Class/Lab No']], striped=True, bordered=True, dark= True, hover=True, style={'background-color': 'black'})
     return table
 
 # Define layout for the page
