@@ -68,18 +68,27 @@ def generate_floor_wise_category_bar(df_building):
 
 fig3 = generate_floor_wise_category_bar(df_building)
 
-# def generate_delayed_days_bar(df_building):
-#     df = df_building.copy()  # create a copy to avoid modifying the original DataFrame
-#     df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
-#     df['Expected Date'] = pd.to_datetime(df['Expected Date'], format='%d-%m-%Y')
-#     df['Days Delayed'] = (df['Date'] - df['Expected Date']).dt.days  # calculate the difference in days
-#     fig = go.Figure(data=[
-#         go.Bar(name='Days Delayed', x=df['Title'], y=df['Days Delayed'])
-#     ])
-#     fig.update_layout(title='Title vs Days Delayed', title_x=0.5)
-#     return fig
+def generate_date_expected_date_line(df_building):
+    df = df_building.copy()  
 
-# fig = generate_delayed_days_bar(df_building)
+    # Fill NaN values
+    df['Date'] = df['Date'].fillna(method='ffill')
+    df['Expected Date'] = df['Expected Date'].fillna(method='ffill')
+
+    df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
+    df['Expected Date'] = pd.to_datetime(df['Expected Date'], format='%d-%m-%Y')
+
+    fig = go.Figure()
+
+    # Add traces
+    fig.add_trace(go.Scatter(y=df['Date'], x=df['Description'], mode='lines', name='Date'))
+    fig.add_trace(go.Scatter(y=df['Expected Date'], x=df['Description'], mode='lines', name='Expected Date'))
+
+    fig.update_layout(title='Date vs Expected Date', title_x=0.5)
+    return fig
+fig = generate_date_expected_date_line(df_building)
+
+
 
 layout = dbc.Container([
     dbc.Row([
@@ -122,7 +131,7 @@ layout = dbc.Container([
     ]),
     dbc.Row([
         dbc.Col([
-            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-transformed', className='my-graph')),
+            dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-transformed', className='my-graph',figure=fig)),
             dbc.Button("Button 1", color="primary", className="mt-2")
         ], width=6, className='multi-graph'),
         dbc.Col([
