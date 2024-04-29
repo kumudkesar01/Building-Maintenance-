@@ -133,7 +133,7 @@ layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-transformed', className='my-graph',figure=fig)),
-            dbc.Button("Button 1", color="primary", className="mt-2")
+            # dbc.Button("Button 1", color="primary", className="mt-2")
         ], width=6, className='multi-graph'),
         dbc.Col([
             dcc.Loading(id='p2-2-loading', type='circle', children=dcc.Graph(id='fig-acf', className='my-graph',figure=fig2)),
